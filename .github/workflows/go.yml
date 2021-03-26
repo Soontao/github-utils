@@ -1,0 +1,50 @@
+name: build
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+  schedule:
+    - cron: "0 2 * * *"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.16
+        id: go
+
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: install dependency
+        run: go get ./...
+
+      - name: unit test
+        run: go test ./... -v -race -coverprofile=coverage.txt -covermode=atomic
+
+      - name: codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: set snapshot version
+        run: echo "VERSION=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
+
+      - name: build
+        working-directory: main
+        run: bash build.sh
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          # Artifact name
+          name: SNAPSHOTS-Build
+          # Directory containing files to upload
+          path: main/build
