@@ -13,10 +13,10 @@ import (
 var Version = "SNAPSHOT"
 
 // AppName of this application
-var AppName = "CommandLineToolUtil"
+var AppName = "GithubUtil"
 
 // AppUsage of this application
-var AppUsage = "A Command Line Tool"
+var AppUsage = "Github Util Tool"
 
 func main() {
 	app := cli.NewApp()
@@ -27,17 +27,10 @@ func main() {
 	app.EnableBashCompletion = true
 
 	commonCommands := []cli.Command{
-		commandEntry,
+		commandExport,
 	}
 
-	daemonCommands, err := createDaemonCommands(AppName, AppUsage)
-
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-
-	app.Commands = append(commonCommands, daemonCommands...)
+	app.Commands = commonCommands
 
 	sort.Sort(cli.CommandsByName(app.Commands))
 

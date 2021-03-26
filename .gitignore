@@ -32,3 +32,5 @@ main/output
 # ast tests
 
 ast/**/output.json
+
+main/main*
