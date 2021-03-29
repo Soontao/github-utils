@@ -34,3 +34,5 @@ main/output
 ast/**/output.json
 
 main/main*
+.env
+*.csv
