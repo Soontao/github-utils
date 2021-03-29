@@ -27,6 +27,7 @@ func main() {
 	app.EnableBashCompletion = true
 
 	commonCommands := []cli.Command{
+		commandCreate,
 		commandExport,
 	}
 

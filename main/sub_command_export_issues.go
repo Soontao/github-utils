@@ -8,14 +8,5 @@ var subCommandExportIssues = cli.Command{
 	Action: func(*cli.Context) error {
 		return nil
 	},
-	Flags: []cli.Flag{
-		cli.StringFlag{
-			Name:     "username, u",
-			Required: true,
-		},
-		cli.StringFlag{
-			Name:     "token, t",
-			Required: true,
-		},
-	},
+	Flags: []cli.Flag{},
 }
