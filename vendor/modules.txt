@@ -28,8 +28,6 @@ github.com/russross/blackfriday/v2
 # github.com/stretchr/testify v1.7.0
 ## explicit
 github.com/stretchr/testify/assert
-# github.com/takama/daemon v1.0.0
-## explicit
 # github.com/urfave/cli v1.22.5
 ## explicit
 github.com/urfave/cli
