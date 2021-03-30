@@ -2,7 +2,9 @@ package lib
 
 import (
 	"context"
+	"log"
 
+	"github.com/fatih/color"
 	"github.com/google/go-github/v34/github"
 )
 
@@ -37,15 +39,19 @@ func RunWithAllIssuesInOrg(client *github.Client, ctx context.Context, org strin
 
 	return RunWithAllRepoInOrgs(client, ctx, org, func(repo *github.Repository) error {
 
+		pageIdx := 1
+
+		repoName := repo.GetName()
+
 		for {
-			pageIdx := 1
-			issues, resp, err := client.Issues.ListByRepo(ctx, org, repo.GetName(), &github.IssueListByRepoOptions{
+			issues, resp, err := client.Issues.ListByRepo(ctx, org, repoName, &github.IssueListByRepoOptions{
 				ListOptions: github.ListOptions{Page: pageIdx, PerPage: 100},
 				State:       "all",
 			})
 			if err != nil {
 				return err
 			}
+			log.Println(color.GreenString("Got %v/%v/issues?page=%v", org, repoName, pageIdx))
 			for _, issue := range issues {
 				if err := consumer(repo, issue); err != nil {
 					return err
