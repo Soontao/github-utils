@@ -14,6 +14,8 @@ github.com/golang/protobuf/proto
 github.com/google/go-github/v34/github
 # github.com/google/go-querystring v1.0.0
 github.com/google/go-querystring/query
+# github.com/gosuri/uilive v0.0.4
+## explicit
 # github.com/jszwec/csvutil v1.5.0
 ## explicit
 github.com/jszwec/csvutil
@@ -44,6 +46,9 @@ golang.org/x/net/context/ctxhttp
 ## explicit
 golang.org/x/oauth2
 golang.org/x/oauth2/internal
+# golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
+## explicit
+golang.org/x/sync/semaphore
 # golang.org/x/sys v0.0.0-20210320140829-1e4c9ba3b0c4
 ## explicit
 golang.org/x/sys/internal/unsafeheader

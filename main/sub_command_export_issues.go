@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
-	"io/ioutil"
+	"encoding/csv"
+	"log"
+	"os"
 	"strings"
 	"time"
 
@@ -29,16 +31,38 @@ var subCommandExportIssues = cli.Command{
 
 		org := cli.String("org")
 		output := cli.String("file")
-		exportIssues := []ExportIssue{}
 
-		lib.RunWithAllIssuesInOrg(client, ctx, org, func(repo *github.Repository, issue *github.Issue) error {
+		csvOutputFile, err := os.OpenFile(output, os.O_CREATE|os.O_RDWR, 0644)
+		if err != nil {
+			return err
+		}
+
+		csvWriter := csv.NewWriter(csvOutputFile)
+		defer csvOutputFile.Close()
+		defer csvWriter.Flush()
+
+		csvEncoder := csvutil.NewEncoder(csvWriter)
+
+		if err := csvEncoder.EncodeHeader(ExportIssue{}); err != nil {
+			return err
+		}
+
+		total := 0
+
+		log.Println("Exporting...")
+		defer log.Println("Finished")
+
+		return lib.RunWithAllIssuesInOrg(client, ctx, org, func(repo *github.Repository, issue *github.Issue) error {
+
 			labels := []string{}
 			for _, label := range issue.Labels {
 				labels = append(labels, label.GetName())
 			}
 
+			// not pull request
 			if issue.GetPullRequestLinks() == nil {
-				exportIssues = append(exportIssues, ExportIssue{
+				total++
+				if err := csvEncoder.Encode(ExportIssue{
 					repo.GetFullName(),
 					issue.GetTitle(),
 					*issue.User.Login,
@@ -46,19 +70,15 @@ var subCommandExportIssues = cli.Command{
 					issue.GetState(),
 					strings.Join(labels, ","),
 					issue.GetHTMLURL(),
-				})
+				}); err != nil {
+					return err
+				}
+
 			}
 
 			return nil
 		})
-		content, err := csvutil.Marshal(exportIssues)
-		if err != nil {
-			return nil
-		}
-		if err := ioutil.WriteFile(output, content, 0644); err != nil {
-			return err
-		}
-		return nil
+
 	}),
 	Flags: []cli.Flag{
 		cli.StringFlag{

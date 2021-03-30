@@ -42,6 +42,7 @@ var subCommandCreateLabels = cli.Command{
 				}
 
 			}
+
 			return nil
 		})
 

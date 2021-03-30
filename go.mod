@@ -7,10 +7,12 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/fatih/color v1.10.0
 	github.com/google/go-github/v34 v34.0.0
+	github.com/gosuri/uilive v0.0.4 // indirect
 	github.com/jszwec/csvutil v1.5.0
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/urfave/cli v1.22.5
 	golang.org/x/oauth2 v0.0.0-20210323180902-22b0adad7558
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/sys v0.0.0-20210320140829-1e4c9ba3b0c4 // indirect
 )
